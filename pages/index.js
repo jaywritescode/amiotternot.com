@@ -54,6 +54,32 @@ export default function Home() {
 
       <footer className={styles.footer}>
         <a
+          href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1"
+          target="_blank"
+          rel="license noopener noreferrer"
+        >
+          <small>
+            amiotternot by jay harris is licensed under CC BY 4.0
+            <img
+              style={{
+                height: "22px",
+                marginLeft: "3px",
+                verticalAlign: "text-bottom",
+              }}
+              src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
+            />
+            <img
+              style={{
+                height: "22px",
+                marginLeft: "3px",
+                verticalAlign: "text-bottom",
+              }}
+              src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
+            />
+          </small>
+        </a>
+
+        <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
           target="_blank"
           rel="noopener noreferrer"
