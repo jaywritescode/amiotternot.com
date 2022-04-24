@@ -6,6 +6,8 @@ import styles from '../styles/Home.module.css'
 export default function Home(props) {
   console.log(props);
 
+  const { previewURL, previewWidth, previewHeight, user } = props.results[0];
+
 
   return (
     <div className={styles.container}>
@@ -47,10 +49,8 @@ export default function Home(props) {
             href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
             className={styles.card}
           >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
+            <h2>Picture of an otter</h2>
+            <Image src={previewURL} height={previewHeight} width={previewWidth} alt={`otter pic by ${user}`} />
           </a>
         </div>
       </main>
