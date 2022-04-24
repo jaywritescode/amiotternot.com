@@ -1,13 +1,12 @@
-import { map, pick } from 'lodash';
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { map, pick } from "lodash";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
   console.log(props);
 
   const { previewURL, previewWidth, previewHeight, user } = props.results[0];
-
 
   return (
     <div className={styles.container}>
@@ -18,13 +17,9 @@ export default function Home(props) {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Am I Otter Not?!?
-        </h1>
+        <h1 className={styles.title}>Am I Otter Not?!?</h1>
 
-        <p className={styles.description}>
-          {"mustelids don't give a shit"}
-        </p>
+        <p className={styles.description}>{"mustelids don't give a shit"}</p>
 
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
@@ -50,7 +45,12 @@ export default function Home(props) {
             className={styles.card}
           >
             <h2>Picture of an otter</h2>
-            <Image src={previewURL} height={previewHeight} width={previewWidth} alt={`otter pic by ${user}`} />
+            <Image
+              src={previewURL}
+              height={previewHeight}
+              width={previewWidth}
+              alt={`otter pic by ${user}`}
+            />
           </a>
         </div>
       </main>
@@ -87,38 +87,41 @@ export default function Home(props) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
+  );
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}&q=otter&image_type=photo`);
+  const res = await fetch(
+    `https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}&q=otter&image_type=photo`
+  );
   const data = await res.json();
-  const {
-    total, hits
-  } = data;
+  const { total, hits } = data;
 
   if (total === 0) {
-    return { notFound: true }
+    return { notFound: true };
   }
 
   return {
     props: {
       total,
-      results: map(hits, result => pick(result, [
-        'previewURL',
-        'previewWidth',
-        'previewHeight',
-        'webformatURL', 
-        'webformatWidth', 
-        'webformatHeight', 
-        'user']))
+      results: map(hits, (result) =>
+        pick(result, [
+          "previewURL",
+          "previewWidth",
+          "previewHeight",
+          "webformatURL",
+          "webformatWidth",
+          "webformatHeight",
+          "user",
+        ])
+      ),
     },
   };
 }
