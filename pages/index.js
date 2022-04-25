@@ -6,7 +6,7 @@ import styles from "../styles/Home.module.css";
 export default function Home(props) {
   console.log(props);
 
-  const { previewURL, previewWidth, previewHeight, user } = props.results[0];
+  const { previewURL, webformatWidth, webformatHeight, user } = props.results[0];
 
   return (
     <div className={styles.container}>
@@ -22,7 +22,7 @@ export default function Home(props) {
         <p className={styles.description}>{"mustelids don't give a shit"}</p>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
+          {/* <a href="https://nextjs.org/docs" className={styles.card}>
             <h2>Documentation &rarr;</h2>
             <p>Find in-depth information about Next.js features and API.</p>
           </a>
@@ -38,20 +38,20 @@ export default function Home(props) {
           >
             <h2>Examples &rarr;</h2>
             <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+          </a> */}
 
-          <a
+          <span
             href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
             className={styles.card}
           >
-            <h2>Picture of an otter</h2>
             <Image
-              src={previewURL}
-              height={previewHeight}
-              width={previewWidth}
+              src="/otter.jpg"
+              width={640}
+              height={368}
               alt={`otter pic by ${user}`}
             />
-          </a>
+            <small>Image by <a href="https://pixabay.com/users/pixel2013-2364555/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">S. Hermann &amp; F. Richter</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">Pixabay</a></small>
+          </span>
         </div>
       </main>
 
