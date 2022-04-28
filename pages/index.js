@@ -1,3 +1,4 @@
+import { Button, ButtonGroup } from '@chakra-ui/react'
 import { map, pick } from "lodash";
 import Head from "next/head";
 import Image from "next/image";
@@ -53,8 +54,10 @@ export default function Home(props) {
             <small>Image by <a href="https://pixabay.com/users/pixel2013-2364555/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">S. Hermann &amp; F. Richter</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">Pixabay</a></small>
           </span>
 
-          <button>Otter!</button>
-          <button>Not... ter...</button>
+          <ButtonGroup>
+            <Button size='lg'>Otter!</Button>
+            <Button size='lg'>Not! ...ter</Button>
+          </ButtonGroup>
         </div>
       </main>
 
