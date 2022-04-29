@@ -13,6 +13,8 @@
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@fontsource/archivo-black": "^4.5.7",
+    "@fontsource/roboto": "^4.5.5",
     "framer-motion": "^6.3.3",
     "lodash": "^4.17.21",
     "next": "12.1.5",
