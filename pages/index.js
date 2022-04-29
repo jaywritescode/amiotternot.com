@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Stack } from '@chakra-ui/react'
+import { Button, ButtonGroup, Heading, Stack, Text } from '@chakra-ui/react'
 import { map, pick } from "lodash";
 import Head from "next/head";
 import Image from "next/image";
@@ -18,9 +18,9 @@ export default function Home(props) {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Am I Otter Not?!?</h1>
+        <Heading as="h1" size="3xl">Am I Otter Not?!?</Heading>
 
-        <p className={styles.description}>{"mustelids don't give a shit"}</p>
+        <Text>{"mustelids don't give a shit"}</Text>
 
         <Stack>
           <Image
