@@ -20,7 +20,7 @@ export default function Home(props) {
       <main className={styles.main}>
         <Heading as="h1" size="3xl">Am I Otter Not?!?</Heading>
 
-        <Text color="brand.900">{"mustelids don't give a shit"}</Text>
+        <Text color="yellow.800">{"mustelids don't give a shit"}</Text>
 
         <Stack>
           <Image
