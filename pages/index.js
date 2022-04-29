@@ -1,4 +1,4 @@
-import { Button, ButtonGroup } from '@chakra-ui/react'
+import { Button, ButtonGroup, Stack } from '@chakra-ui/react'
 import { map, pick } from "lodash";
 import Head from "next/head";
 import Image from "next/image";
@@ -22,25 +22,20 @@ export default function Home(props) {
 
         <p className={styles.description}>{"mustelids don't give a shit"}</p>
 
-        <div className={styles.grid}>
-          <span
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <Image
-              src="/otter.jpg"
-              width={640}
-              height={368}
-              alt={`otter pic by ${user}`}
-            />
-            <small>Image by <a href="https://pixabay.com/users/pixel2013-2364555/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">S. Hermann &amp; F. Richter</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">Pixabay</a></small>
-          </span>
-
+        <Stack>
+          <Image
+            src="/otter.jpg"
+            width={640}
+            height={368}
+            alt={`otter pic by ${user}`}
+          />
+          <small>Image by <a href="https://pixabay.com/users/pixel2013-2364555/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">S. Hermann &amp; F. Richter</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">Pixabay</a></small>
+        
           <ButtonGroup>
             <Button size='lg'>Otter!</Button>
             <Button size='lg'>Not! ...ter</Button>
           </ButtonGroup>
-        </div>
+        </Stack>
       </main>
 
       <footer className={styles.footer}>
