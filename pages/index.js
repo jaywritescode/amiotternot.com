@@ -19,9 +19,9 @@ export default function Home(props) {
       </Head>
 
       <main className={styles.main}>
-        <Heading as="h1" size="3xl">Am I Otter Not?!?</Heading>
+        <Heading as="h1" size="3xl" fontFamily="primary" color="green.600">Am I Otter Not?!?</Heading>
 
-        <Text color="yellow.800">{"mustelids don't give a shit"}</Text>
+        <Text color="yellow.800" fontFamily="secondary">{"mustelids don't give a shit"}</Text>
 
         <Stack>
           <Image
@@ -34,7 +34,11 @@ export default function Home(props) {
         
           <ButtonGroup>
             <OtterButton>Otter!</OtterButton>
-            <OtterButton>Not! …ter</OtterButton>
+            <OtterButton>
+              <Text>Not!</Text>
+              <Text>{' '}</Text>
+              <Text fontSize="sm" fontWeight="thin">…ter</Text>
+            </OtterButton>
           </ButtonGroup>
         </Stack>
       </main>
