@@ -5,6 +5,7 @@ import { promisify } from 'node:util';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 import sqlite3 from 'sqlite3';
+import _ from 'lodash';
 
 const streamPipeline = promisify(pipeline);
 
@@ -17,26 +18,16 @@ if (loadEnv.error) {
 
 async function main(keyword) {
   const response = await fetch(
-    `https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}&q=${keyword}&image_type=photo`
+    `https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}&q=${keyword}&image_type=photo&order=latest`
   );
 
   const data = await response.json();
   const { hits } = data;
-
-  const {
-    id,
-    webformatWidth,
-    webformatHeight,
-    user,
-    user_id,
-    webformatURL
-  } = hits[0];
-  const image = await fetch(webformatURL);
-  const filename = webformatURL.match(/\/(g[0-9a-f]+_\d+\.jpg)$/)[1]
-  await streamPipeline(image.body, createWriteStream(`public/pics/${filename}`));
+  const urls = hits.map(obj => _.get(obj, 'webformatURL'));
   
+  fetchImages(keyword, urls);
 
-  // const blob = await image.blob();
+  
   
   // db.serialize(() => {
   //   db.run("CREATE TABLE IF NOT EXISTS images (id INTEGER PRIMARY KEY, original_id, source, width, height, notes, data");
@@ -51,4 +42,18 @@ async function main(keyword) {
   // });
 }
 
-main('ferret');
+async function fetchImages(keyword, urls) {
+  // let's do it synchronously first
+  urls.forEach(async (url) => {
+    const filename = url.match(/\/(g[0-9a-f]+_\d+\.jpg)$/)[1]
+    if (!filename) {
+      return;
+    }
+
+    const image = await fetch(url);
+    await streamPipeline(image.body, createWriteStream(`public/pics/${filename}`));
+  });
+}
+
+
+main('wolverine');
