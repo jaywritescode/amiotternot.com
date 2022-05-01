@@ -32,8 +32,8 @@ async function main(keyword) {
     webformatURL
   } = hits[0];
   const image = await fetch(webformatURL);
-  
-  await streamPipeline(image.body, createWriteStream('mustelid.jpg'));
+  const filename = webformatURL.match(/\/(g[0-9a-f]+_\d+\.jpg)$/)[1]
+  await streamPipeline(image.body, createWriteStream(`public/pics/${filename}`));
   
 
   // const blob = await image.blob();
