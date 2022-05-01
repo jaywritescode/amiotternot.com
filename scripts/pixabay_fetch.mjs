@@ -1,13 +1,10 @@
 import { createWriteStream } from 'node:fs';
-import { pipeline } from 'node:stream';
-import { promisify } from 'node:util';
+import { pipeline } from 'node:stream/promises';
 
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 import sqlite3 from 'sqlite3';
 import _ from 'lodash';
-
-const streamPipeline = promisify(pipeline);
 
 const db = new sqlite3.Database(':memory:');
 
@@ -27,7 +24,6 @@ async function main(keyword) {
   
   fetchImages(keyword, urls);
 
-  
   
   // db.serialize(() => {
   //   db.run("CREATE TABLE IF NOT EXISTS images (id INTEGER PRIMARY KEY, original_id, source, width, height, notes, data");
@@ -51,9 +47,9 @@ async function fetchImages(keyword, urls) {
     }
 
     const image = await fetch(url);
-    await streamPipeline(image.body, createWriteStream(`public/pics/${filename}`));
+    await pipeline(image.body, createWriteStream(`public/pics/${filename}`));
   });
 }
 
 
-main('wolverine');
+main('ferret');
