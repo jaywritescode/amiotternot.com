@@ -20,36 +20,54 @@ async function main(keyword) {
 
   const data = await response.json();
   const { hits } = data;
-  const urls = hits.map(obj => _.get(obj, 'webformatURL'));
-  
-  fetchImages(keyword, urls);
+//  const urls = hits.map(obj => _.get(obj, 'webformatURL'));
 
-  
-  // db.serialize(() => {
-  //   db.run("CREATE TABLE IF NOT EXISTS images (id INTEGER PRIMARY KEY, original_id, source, width, height, notes, data");
+  db.serialize(() => {
+    db.run("CREATE TABLE IF NOT EXISTS images " + 
+      "(id INTEGER PRIMARY KEY, keyword, original_id, source, width, height, notes, filename, votes DEFAULT 0, upvotes DEFAULT 0)")
+  });
 
-  //   db.run("INSERT INTO images VALUES (?, ?, ?, ?, ?, ?)", 
-  //     [id, webformatURL, webformatWidth, webformatHeight, user, blob]);
-
-
-  //   db.each("SELECT rowid AS id, original_id, source, width, height, notes, data FROM images", (err, row) => {
-  //     console.log(row.id + ": " + row.info);
-  //   })
-  // });
+  hits.forEach(result => downloadAndProcessImage(keyword, result));
 }
 
-async function fetchImages(keyword, urls) {
-  // let's do it synchronously first
-  urls.forEach(async (url) => {
-    const filename = url.match(/\/(g[0-9a-f]+_\d+\.jpg)$/)[1]
-    if (!filename) {
-      return;
-    }
+async function downloadAndProcessImage(keyword, result) {
+  const {
+    id,
+    pageURL,
+    type,
+    tags,
+    previewURL,
+    previewWidth,
+    previewHeight,
+    webformatURL,
+    webformatWidth,
+    webformatHeight,
+    largeImageURL,
+    imageWidth,
+    imageHeight,
+    imageSize,
+    views,
+    downloads,
+    collections,
+    likes,
+    comments,
+    user_id,
+    user,
+    userImageURL,
+  } = result;
 
-    const image = await fetch(url);
-    await pipeline(image.body, createWriteStream(`public/pics/${filename}`));
+  const filename = webformatURL.match(/\/(g[0-9a-f]+_\d+\.jpg)$/)[1];
+  if (!filename) {
+    return;
+  }
+
+  const image = await fetch(webformatURL);
+  await pipeline(image.body, createWriteStream(`public/pics/${filename}`));
+
+  db.serialize(() => {
+    db.run("INSERT INTO images (keyword, original_id, source, width, height, notes, filename) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [keyword, id, webformatURL, webformatWidth, webformatHeight, JSON.stringify({ user, user_id }), filename])
   });
 }
 
-
-main('ferret');
+main('otter');
