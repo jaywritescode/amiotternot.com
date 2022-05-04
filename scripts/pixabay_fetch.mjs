@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import sqlite3 from 'sqlite3';
 import _ from 'lodash';
 
-const db = new sqlite3.Database(':memory:');
+const db = new sqlite3.Database('pics.db');
 
 const loadEnv = dotenv.config({path: '.env.local'});
 if (loadEnv.error) {
