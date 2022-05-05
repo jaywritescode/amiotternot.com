@@ -28,7 +28,7 @@ function pixabayURL(keyword, page) {
   return 'https://pixabay.com/api/?' + query.join('&');
 }
 
-async function main(keyword) {
+async function update(keyword) {
   const createTableQuery = "CREATE TABLE IF NOT EXISTS images " +
     "(id INTEGER PRIMARY KEY, keyword, original_id, source, " +
     "width, height, notes, filename, votes DEFAULT 0, upvotes DEFAULT 0)";
@@ -65,7 +65,7 @@ async function main(keyword) {
 }
 
 import yargs from 'yargs';
-const argv = yargs(process.argv.slice(2))
+const argv = await yargs(process.argv.slice(2))
   .scriptName('pixaby-pic-manager')
   .usage('$0 <cmd> [args]')
   .command('update [keyword]', 'get the most recent photos from pixabay', (yargs) => {
@@ -74,8 +74,10 @@ const argv = yargs(process.argv.slice(2))
       default: 'otter',
       description: 'the keyword to search for in pixabay',
     })
-  }, main)
+  })
   .help()
   .argv;
 
-console.log(argv);
+if (_.head(argv._) == 'update') {
+  update(argv.keyword);
+}
