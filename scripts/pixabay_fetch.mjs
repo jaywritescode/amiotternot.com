@@ -1,4 +1,4 @@
-import { createWriteStream } from 'node:fs';
+import { createWriteStream, unlink } from 'node:fs';
 import { pipeline } from 'node:stream/promises';
 
 import fetch from 'node-fetch';
@@ -64,6 +64,13 @@ async function update(keyword) {
     .then(() => db.close());
 }
 
+async function remove(filename) {
+  unlink(`public/pics/${filename}`, (err) => {
+    if (err) { throw err; }
+    db.run("DELETE FROM images WHERE filename=?", filename);
+  });
+}
+
 import yargs from 'yargs';
 const argv = await yargs(process.argv.slice(2))
   .scriptName('pixaby-pic-manager')
@@ -75,9 +82,21 @@ const argv = await yargs(process.argv.slice(2))
       description: 'the keyword to search for in pixabay',
     })
   })
+  .command('delete [filename]', 'delete a photo from the filesystem and db', (yargs) => {
+    yargs.positional('keyword', {
+      type: 'string',
+      description: 'the filename to delete, relative to the public/pics directory',
+    });
+  })
   .help()
   .argv;
 
-if (_.head(argv._) == 'update') {
-  update(argv.keyword);
+
+switch (_.head(argv._)) {
+  case 'update':
+    update(argv.keyword);
+    break;
+  case 'delete':
+    remove(argv.filename);
+    break;
 }
