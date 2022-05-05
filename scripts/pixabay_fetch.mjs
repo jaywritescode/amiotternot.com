@@ -32,7 +32,8 @@ async function update(keyword) {
   const createTableQuery =
     "CREATE TABLE IF NOT EXISTS images " +
     "(id INTEGER PRIMARY KEY, keyword, original_id, source, " +
-    "width, height, notes, filename, votes DEFAULT 0, upvotes DEFAULT 0)";
+    "width, height, notes, filename, created_on DEFAULT CURRENT_TIMESTAMP, " +
+    "votes DEFAULT 0, upvotes DEFAULT 0)";
 
   db.serialize();
   db.run(createTableQuery);
