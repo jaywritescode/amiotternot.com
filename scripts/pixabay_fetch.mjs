@@ -64,5 +64,18 @@ async function main(keyword) {
     .then(() => db.close());
 }
 
+import yargs from 'yargs';
+const argv = yargs(process.argv.slice(2))
+  .scriptName('pixaby-pic-manager')
+  .usage('$0 <cmd> [args]')
+  .command('update [keyword]', 'get the most recent photos from pixabay', (yargs) => {
+    yargs.positional('keyword', {
+      type: 'string',
+      default: 'otter',
+      description: 'the keyword to search for in pixabay',
+    })
+  }, main)
+  .help()
+  .argv;
 
-main('ferret');
+console.log(argv);
