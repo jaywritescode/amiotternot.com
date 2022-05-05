@@ -7,67 +7,62 @@ import sqlite3 from 'sqlite3';
 import _ from 'lodash';
 
 const db = new sqlite3.Database('pics.db');
+sqlite3.verbose();
 
 const loadEnv = dotenv.config({path: '.env.local'});
 if (loadEnv.error) {
   throw loadEnv.error;
 }
 
-async function main(keyword) {
-  const response = await fetch(
-    `https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}&q=${keyword}&image_type=photo&order=latest`
-  );
-
-  const data = await response.json();
-  const { hits } = data;
-//  const urls = hits.map(obj => _.get(obj, 'webformatURL'));
-
-  db.serialize(() => {
-    db.run("CREATE TABLE IF NOT EXISTS images " + 
-      "(id INTEGER PRIMARY KEY, keyword, original_id, source, width, height, notes, filename, votes DEFAULT 0, upvotes DEFAULT 0)")
-  });
-
-  hits.forEach(result => downloadAndProcessImage(keyword, result));
-}
-
-async function downloadAndProcessImage(keyword, result) {
-  const {
-    id,
-    pageURL,
-    type,
-    tags,
-    previewURL,
-    previewWidth,
-    previewHeight,
-    webformatURL,
-    webformatWidth,
-    webformatHeight,
-    largeImageURL,
-    imageWidth,
-    imageHeight,
-    imageSize,
-    views,
-    downloads,
-    collections,
-    likes,
-    comments,
-    user_id,
-    user,
-    userImageURL,
-  } = result;
-
-  const filename = webformatURL.match(/\/(g[0-9a-f]+_\d+\.jpg)$/)[1];
-  if (!filename) {
-    return;
+function pixabayURL(keyword, page) {
+  const query = [
+    `key=${process.env.PIXABAY_API_KEY}`,
+    `q=${keyword}`,
+    'image_type=photo',
+    'order=latest'
+  ];
+  if (page) {
+    query.push(`page=${page}`);
   }
 
-  const image = await fetch(webformatURL);
-  await pipeline(image.body, createWriteStream(`public/pics/${filename}`));
-
-  db.serialize(() => {
-    db.run("INSERT INTO images (keyword, original_id, source, width, height, notes, filename) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [keyword, id, webformatURL, webformatWidth, webformatHeight, JSON.stringify({ user, user_id }), filename])
-  });
+  return 'https://pixabay.com/api/?' + query.join('&');
 }
 
-main('otter');
+async function main(keyword) {
+  const createTableQuery = "CREATE TABLE IF NOT EXISTS images " +
+    "(id INTEGER PRIMARY KEY, keyword, original_id, source, " +
+    "width, height, notes, filename, votes DEFAULT 0, upvotes DEFAULT 0)";
+
+  db.serialize();
+  db.run(createTableQuery);
+
+  const response = await fetch(pixabayURL(keyword));
+  const { totalHits, hits } = await response.json(); 
+
+  db.parallelize();
+  const pageRequests = _.range(Math.ceil(totalHits / hits.length))
+    .map(x => x + 1)
+    .map(page => fetch(pixabayURL(keyword, page)))
+
+  Promise.all(pageRequests)
+    .then(responses => Promise.all(responses.map(r => r.json())))
+    .then(pages => Promise.allSettled(pages
+        .map(page => _.get(page, 'hits'))
+        .flatMap(_.identity)
+        .map(async record => {
+          const { id, webformatURL, webformatWidth, webformatHeight, user_id, user } = record;
+          const filename = webformatURL.match(/\/(g[0-9a-f]+_\d+\.jpg)$/)[1];
+
+          if (!filename) { return; }
+
+          const image = await fetch(webformatURL);
+          await pipeline(image.body, createWriteStream(`public/pics/${filename}`));
+          
+          return db.run("INSERT INTO images (keyword, original_id, source, width, height, notes, filename) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            [keyword, id, webformatURL, webformatWidth, webformatHeight, JSON.stringify({ user, user_id }), filename]);
+        })))
+    .then(() => db.close());
+}
+
+
+main('ferret');
