@@ -93,7 +93,7 @@ async function update(keyword) {
 }
 
 async function remove(filename) {
-  unlink(`public/pics/${filename}`, (err) => {
+  unlink(filename, (err) => {
     if (err) {
       throw err;
     }
@@ -117,13 +117,13 @@ const argv = await yargs(process.argv.slice(2))
     }
   )
   .command(
-    "delete [filename]",
-    "delete a photo from the filesystem and db",
+    "delete [filenames...]",
+    "delete photos from the filesystem and db",
     (yargs) => {
       yargs.positional("keyword", {
         type: "string",
         description:
-          "the filename to delete, relative to the public/pics directory",
+          "the filename to delete",
       });
     }
   )
@@ -134,6 +134,6 @@ switch (_.head(argv._)) {
     update(argv.keyword);
     break;
   case "delete":
-    remove(argv.filename);
+    argv.filenames.forEach(remove);  
     break;
 }
