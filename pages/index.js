@@ -1,14 +1,15 @@
-import { Button, ButtonGroup, Heading, Stack, Text } from '@chakra-ui/react'
+import { Button, ButtonGroup, Heading, Stack, Text } from "@chakra-ui/react";
 import { map, pick } from "lodash";
 import Head from "next/head";
 import Image from "next/image";
-import OtterButton from '../components/OtterButton';
+import OtterButton from "../components/OtterButton";
 import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
   console.log(props);
 
-  const { previewURL, webformatWidth, webformatHeight, user } = props.results[0];
+  const { previewURL, webformatWidth, webformatHeight, user } =
+    props.results[0];
 
   return (
     <div className={styles.container}>
@@ -19,9 +20,13 @@ export default function Home(props) {
       </Head>
 
       <main className={styles.main}>
-        <Heading as="h1" size="3xl" fontFamily="primary" color="green.600">Am I Otter Not?!?</Heading>
+        <Heading as="h1" size="3xl" fontFamily="primary" color="green.600">
+          Am I Otter Not?!?
+        </Heading>
 
-        <Text color="yellow.800" fontFamily="secondary">{"mustelids don't give a shit"}</Text>
+        <Text color="yellow.800" fontFamily="secondary">
+          {"mustelids don't give a shit"}
+        </Text>
 
         <Stack>
           <Image
@@ -30,14 +35,25 @@ export default function Home(props) {
             height={368}
             alt={`otter pic by ${user}`}
           />
-          <small>Image by <a href="https://pixabay.com/users/pixel2013-2364555/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">S. Hermann &amp; F. Richter</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">Pixabay</a></small>
-        
+          <small>
+            Image by{" "}
+            <a href="https://pixabay.com/users/pixel2013-2364555/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">
+              S. Hermann &amp; F. Richter
+            </a>{" "}
+            from{" "}
+            <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">
+              Pixabay
+            </a>
+          </small>
+
           <ButtonGroup>
             <OtterButton>Otter!</OtterButton>
             <OtterButton>
               <Text>Not!</Text>
-              <Text>{' '}</Text>
-              <Text fontSize="sm" fontWeight="thin">…ter</Text>
+              <Text> </Text>
+              <Text fontSize="sm" fontWeight="thin">
+                …ter
+              </Text>
             </OtterButton>
           </ButtonGroup>
         </Stack>
