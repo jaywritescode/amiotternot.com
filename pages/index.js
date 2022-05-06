@@ -100,7 +100,6 @@ export default function Home(props) {
 }
 
 import sqlite3 from "sqlite3";
-import pify from "pify";
 
 const DATABASE = "pics.db";
 
