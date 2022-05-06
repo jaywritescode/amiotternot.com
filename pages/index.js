@@ -1,5 +1,4 @@
-import { Button, ButtonGroup, Heading, Stack, Text } from "@chakra-ui/react";
-import { map, pick } from "lodash";
+import { ButtonGroup, Heading, Stack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Image from "next/image";
 import OtterButton from "../components/OtterButton";
@@ -8,8 +7,7 @@ import styles from "../styles/Home.module.css";
 export default function Home(props) {
   console.log(props);
 
-  const { previewURL, webformatWidth, webformatHeight, user } =
-    props.results[0];
+  const { source, width, height, notes, filename } = props;
 
   return (
     <div className={styles.container}>
@@ -30,10 +28,10 @@ export default function Home(props) {
 
         <Stack>
           <Image
-            src="/otter.jpg"
-            width={640}
-            height={368}
-            alt={`otter pic by ${user}`}
+            src={`/pics/${filename}`}
+            width={width}
+            height={height}
+            alt={`otter pic by ${notes}`}
           />
           <small>
             Image by{" "}
@@ -101,31 +99,48 @@ export default function Home(props) {
   );
 }
 
+import sqlite3 from "sqlite3";
+import pify from "pify";
+
+const DATABASE = "pics.db";
+
 export async function getServerSideProps(context) {
-  const res = await fetch(
-    `https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}&q=otter&image_type=photo`
-  );
-  const data = await res.json();
-  const { total, hits } = data;
+  const db = new sqlite3.Database(DATABASE);
 
-  if (total === 0) {
-    return { notFound: true };
-  }
-
-  return {
-    props: {
-      total,
-      results: map(hits, (result) =>
-        pick(result, [
-          "previewURL",
-          "previewWidth",
-          "previewHeight",
-          "webformatURL",
-          "webformatWidth",
-          "webformatHeight",
-          "user",
-        ])
-      ),
-    },
-  };
+  const result = await new Promise((resolve, reject) => {
+    db.get("SELECT source, width, height, notes, filename FROM images ORDER BY random() limit 1", (err, row) => {
+      if (err) reject(err);
+      else resolve(row);      
+    });
+  });
+  return { props: result };
 }
+
+// export async function getServerSideProps(context) {
+//   const res = await fetch(
+//     `https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}&q=otter&image_type=photo`
+//   );
+//   const data = await res.json();
+//   const { total, hits } = data;
+
+//   if (total === 0) {
+//     return { notFound: true };
+//   }
+
+//   return {
+//     props: {
+//       total,
+//       results: map(hits, (result) =>
+//         pick(result, [
+//           "previewURL",
+//           "previewWidth",
+//           "previewHeight",
+//           "webformatURL",
+//           "webformatWidth",
+//           "webformatHeight",
+//           "user",
+//         ])
+//       ),
+//     },
+//   };
+// }
