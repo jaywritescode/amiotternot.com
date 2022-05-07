@@ -5,9 +5,7 @@ import { Attribution, OtterButton} from "../components";
 import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
-  console.log(props);
-
-  const { source, width, height, user, user_id, filename } = props;
+  const { keyword, width, height, user, user_id, filename } = props;
 
   return (
     <div className={styles.container}>
@@ -31,7 +29,7 @@ export default function Home(props) {
             src={`/pics/${filename}`}
             width={width}
             height={height}
-            alt={`otter pic`}
+            alt={`${keyword} pic`}
           />
           <Attribution user={user} user_id={user_id} />
 
@@ -98,7 +96,7 @@ export async function getServerSideProps(context) {
   const db = new sqlite3.Database(DATABASE);
 
   const result = await new Promise((resolve, reject) => {
-    db.get("SELECT source, width, height, user, user_id, filename FROM images ORDER BY random() limit 1", (err, row) => {
+    db.get("SELECT keyword, width, height, user, user_id, filename FROM images ORDER BY random() limit 1", (err, row) => {
       if (err) reject(err);
       else resolve(row);      
     });
