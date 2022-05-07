@@ -29,14 +29,12 @@ function pixabayURL(keyword, page) {
 }
 
 async function update(keyword) {
-  const createTableQuery =
-    "CREATE TABLE IF NOT EXISTS images " +
-    "(id INTEGER PRIMARY KEY, keyword, original_id, source, " +
-    "width, height, notes, filename, created_on DEFAULT CURRENT_TIMESTAMP, " +
-    "votes DEFAULT 0, upvotes DEFAULT 0)";
-
   db.serialize();
-  db.run(createTableQuery);
+  db.run(
+    "CREATE TABLE IF NOT EXISTS images " + 
+    "(id INTEGER PRIMARY KEY, keyword, original_id, source, width, height, " +
+      "user, user_id, filename, created_on DEFAULT CURRENT_TIMESTAMP, " +
+      "votes DEFAULT 0, upvotes DEFAULT 0)");
 
   const response = await fetch(pixabayURL(keyword));
   const { totalHits, hits } = await response.json();
@@ -56,15 +54,17 @@ async function update(keyword) {
           .map(async (record) => {
             const {
               id,
+              pageURL,
               webformatURL,
               webformatWidth,
               webformatHeight,
               user_id,
               user,
             } = record;
-            const filename = webformatURL.match(/\/(g[0-9a-f]+_\d+\.jpg)$/)[1];
+            const filename = pageURL.match(/\/([^/]+)\/$/)[1] + '.jpg';
 
             if (!filename) {
+              console.warn("Couldn't parse filename from page URL. Aborting.");
               return;
             }
 
@@ -75,14 +75,17 @@ async function update(keyword) {
             );
 
             return db.run(
-              "INSERT INTO images (keyword, original_id, source, width, height, notes, filename) VALUES (?, ?, ?, ?, ?, ?, ?)",
+              "INSERT INTO images " + 
+                "(keyword, original_id, source, width, height, user, user_id, filename) " + 
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
               [
                 keyword,
                 id,
-                webformatURL,
+                pageURL,
                 webformatWidth,
                 webformatHeight,
-                JSON.stringify({ user, user_id }),
+                user,
+                user_id,
                 filename,
               ]
             );
