@@ -35,13 +35,7 @@ export default function Home(props) {
 
           <ButtonGroup>
             <OtterButton>Otter!</OtterButton>
-            <OtterButton>
-              <Text>Not!</Text>
-              <Text> </Text>
-              <Text fontSize="sm" fontWeight="thin">
-                …ter
-              </Text>
-            </OtterButton>
+            <OtterButton>Not!</OtterButton>
           </ButtonGroup>
         </Stack>
       </main>
@@ -95,14 +89,18 @@ const DATABASE = "pics.db";
 export async function getServerSideProps(context) {
   const db = new sqlite3.Database(DATABASE);
 
-  const result = await new Promise((resolve, reject) => {
-    db.get(
-      "SELECT keyword, width, height, user, user_id, filename FROM images ORDER BY random() limit 1",
-      (err, row) => {
-        if (err) reject(err);
-        else resolve(row);
-      }
-    );
-  });
-  return { props: result };
+  try {
+    const result = await new Promise((resolve, reject) => {
+      db.get(
+        "SELECT keyword, width, height, user, user_id, filename FROM images ORDER BY random() limit 1",
+        (err, row) => {
+          if (err) reject(err);
+          else resolve(row);
+        }
+      );
+    });
+    return { props: result };
+  } catch(err) {
+    return { notFound: true };
+  }
 }
