@@ -1,13 +1,13 @@
 import { ButtonGroup, Heading, Stack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Image from "next/image";
-import OtterButton from "../components/OtterButton";
+import { Attribution, OtterButton} from "../components";
 import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
   console.log(props);
 
-  const { source, width, height, notes, filename } = props;
+  const { source, width, height, user, user_id, filename } = props;
 
   return (
     <div className={styles.container}>
@@ -31,18 +31,9 @@ export default function Home(props) {
             src={`/pics/${filename}`}
             width={width}
             height={height}
-            alt={`otter pic by ${notes}`}
+            alt={`otter pic`}
           />
-          <small>
-            Image by{" "}
-            <a href="https://pixabay.com/users/pixel2013-2364555/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">
-              S. Hermann &amp; F. Richter
-            </a>{" "}
-            from{" "}
-            <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1438381">
-              Pixabay
-            </a>
-          </small>
+          <Attribution user={user} user_id={user_id} />
 
           <ButtonGroup>
             <OtterButton>Otter!</OtterButton>
@@ -107,7 +98,7 @@ export async function getServerSideProps(context) {
   const db = new sqlite3.Database(DATABASE);
 
   const result = await new Promise((resolve, reject) => {
-    db.get("SELECT source, width, height, notes, filename FROM images ORDER BY random() limit 1", (err, row) => {
+    db.get("SELECT source, width, height, user, user_id, filename FROM images ORDER BY random() limit 1", (err, row) => {
       if (err) reject(err);
       else resolve(row);      
     });
