@@ -105,32 +105,3 @@ export async function getServerSideProps(context) {
   });
   return { props: result };
 }
-
-// export async function getServerSideProps(context) {
-//   const res = await fetch(
-//     `https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}&q=otter&image_type=photo`
-//   );
-//   const data = await res.json();
-//   const { total, hits } = data;
-
-//   if (total === 0) {
-//     return { notFound: true };
-//   }
-
-//   return {
-//     props: {
-//       total,
-//       results: map(hits, (result) =>
-//         pick(result, [
-//           "previewURL",
-//           "previewWidth",
-//           "previewHeight",
-//           "webformatURL",
-//           "webformatWidth",
-//           "webformatHeight",
-//           "user",
-//         ])
-//       ),
-//     },
-//   };
-// }
