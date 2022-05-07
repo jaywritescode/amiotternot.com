@@ -31,10 +31,11 @@ function pixabayURL(keyword, page) {
 async function update(keyword) {
   db.serialize();
   db.run(
-    "CREATE TABLE IF NOT EXISTS images " + 
-    "(id INTEGER PRIMARY KEY, keyword, original_id, source, width, height, " +
+    "CREATE TABLE IF NOT EXISTS images " +
+      "(id INTEGER PRIMARY KEY, keyword, original_id, source, width, height, " +
       "user, user_id, filename, created_on DEFAULT CURRENT_TIMESTAMP, " +
-      "votes DEFAULT 0, upvotes DEFAULT 0)");
+      "votes DEFAULT 0, upvotes DEFAULT 0)"
+  );
 
   const response = await fetch(pixabayURL(keyword));
   const { totalHits, hits } = await response.json();
@@ -61,7 +62,7 @@ async function update(keyword) {
               user_id,
               user,
             } = record;
-            const filename = pageURL.match(/\/([^/]+)\/$/)[1] + '.jpg';
+            const filename = pageURL.match(/\/([^/]+)\/$/)[1] + ".jpg";
 
             if (!filename) {
               console.warn("Couldn't parse filename from page URL. Aborting.");
@@ -75,8 +76,8 @@ async function update(keyword) {
             );
 
             return db.run(
-              "INSERT INTO images " + 
-                "(keyword, original_id, source, width, height, user, user_id, filename) " + 
+              "INSERT INTO images " +
+                "(keyword, original_id, source, width, height, user, user_id, filename) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
               [
                 keyword,
@@ -125,8 +126,7 @@ const argv = await yargs(process.argv.slice(2))
     (yargs) => {
       yargs.positional("keyword", {
         type: "string",
-        description:
-          "the filename to delete",
+        description: "the filename to delete",
       });
     }
   )
@@ -137,6 +137,6 @@ switch (_.head(argv._)) {
     update(argv.keyword);
     break;
   case "delete":
-    argv.filenames.forEach(remove);  
+    argv.filenames.forEach(remove);
     break;
 }

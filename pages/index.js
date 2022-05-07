@@ -1,7 +1,7 @@
 import { ButtonGroup, Heading, Stack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Image from "next/image";
-import { Attribution, OtterButton} from "../components";
+import { Attribution, OtterButton } from "../components";
 import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
@@ -96,10 +96,13 @@ export async function getServerSideProps(context) {
   const db = new sqlite3.Database(DATABASE);
 
   const result = await new Promise((resolve, reject) => {
-    db.get("SELECT keyword, width, height, user, user_id, filename FROM images ORDER BY random() limit 1", (err, row) => {
-      if (err) reject(err);
-      else resolve(row);      
-    });
+    db.get(
+      "SELECT keyword, width, height, user, user_id, filename FROM images ORDER BY random() limit 1",
+      (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
+      }
+    );
   });
   return { props: result };
 }
