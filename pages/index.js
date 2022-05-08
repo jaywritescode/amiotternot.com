@@ -5,7 +5,7 @@ import { Attribution, OtterButton } from "../components";
 import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
-  const { keyword, width, height, user, user_id, filename } = props;
+  const { id, keyword, width, height, user, user_id, filename } = props;
 
   return (
     <div className={styles.container}>
@@ -34,8 +34,8 @@ export default function Home(props) {
           <Attribution user={user} user_id={user_id} />
 
           <ButtonGroup>
-            <OtterButton>Otter!</OtterButton>
-            <OtterButton>Not!</OtterButton>
+            <OtterButton id={id} isOtter={true}>Otter!</OtterButton>
+            <OtterButton id={id} isOtter={false}>Not!</OtterButton>
           </ButtonGroup>
         </Stack>
       </main>
@@ -83,6 +83,7 @@ export default function Home(props) {
 }
 
 import sqlite3 from "sqlite3";
+import { useRouter } from "next/router";
 
 const DATABASE = "pics.db";
 
@@ -92,7 +93,7 @@ export async function getServerSideProps(context) {
   try {
     const result = await new Promise((resolve, reject) => {
       db.get(
-        "SELECT keyword, width, height, user, user_id, filename FROM images ORDER BY random() limit 1",
+        "SELECT id, keyword, width, height, user, user_id, filename FROM images ORDER BY random() limit 1",
         (err, row) => {
           if (err) reject(err);
           else resolve(row);
