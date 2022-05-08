@@ -101,11 +101,13 @@ async function remove(filename) {
     if (err) {
       throw err;
     }
-    db.run("DELETE FROM images WHERE filename=?", filename);
+
+    db.run("DELETE FROM images WHERE filename=?", path.basename(filename));
   });
 }
 
 import yargs from "yargs";
+import path from "node:path";
 const argv = await yargs(process.argv.slice(2))
   .scriptName("pixaby-pic-manager")
   .usage("$0 <cmd> [args]")
