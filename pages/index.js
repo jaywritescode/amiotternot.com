@@ -45,7 +45,7 @@ export default function Home(props) {
       </main>
 
       <footer className={styles.footer}>
-        <Text>
+        <Text fontSize={"xs"}>
           <a href="https://amiotternot.com">amiotternot</a> by{" "}
           <a href="https://jaywritesco.de">jay harris</a> is{" "}
           <a
@@ -59,7 +59,6 @@ export default function Home(props) {
           <Image
             alt=""
             style={{
-              height: "22px",
               marginLeft: "3px",
               verticalAlign: "text-bottom",
             }}
@@ -70,7 +69,6 @@ export default function Home(props) {
           <Image
             alt=""
             style={{
-              height: "22px",
               marginLeft: "3px",
               verticalAlign: "text-bottom",
             }}
@@ -79,44 +77,6 @@ export default function Home(props) {
             width={22}
           />
         </Text>
-
-        {/* 
-        <a
-          href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1"
-          target="_blank"
-          rel="license noopener noreferrer"
-        >
-          <small>
-            amiotternot by jay harris is licensed under CC BY 4.0
-            <img
-              style={{
-                height: "22px",
-                marginLeft: "3px",
-                verticalAlign: "text-bottom",
-              }}
-              src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
-            />
-            <img
-              style={{
-                height: "22px",
-                marginLeft: "3px",
-                verticalAlign: "text-bottom",
-              }}
-              src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
-            />
-          </small>
-        </a> */}
-
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
       </footer>
     </div>
   );
