@@ -35,7 +35,9 @@ async function update(keyword) {
       "(id INTEGER PRIMARY KEY, keyword, original_id, source, width, height, " +
       "user, user_id, filename, created_on DEFAULT CURRENT_TIMESTAMP)"
   );
-  db.run("CREATE TABLE IF NOT EXISTS votes (image_id REFERENCES images(id), is_otter)");
+  db.run(
+    "CREATE TABLE IF NOT EXISTS votes (image_id REFERENCES images(id), is_otter)"
+  );
 
   const response = await fetch(pixabayURL(keyword));
   const { totalHits, hits } = await response.json();

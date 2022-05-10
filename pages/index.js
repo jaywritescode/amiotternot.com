@@ -34,59 +34,53 @@ export default function Home(props) {
           <Attribution user={user} user_id={user_id} />
 
           <ButtonGroup>
-            <OtterButton id={id} isOtter={true}>Otter!</OtterButton>
-            <OtterButton id={id} isOtter={false}>Not!</OtterButton>
+            <OtterButton id={id} isOtter={true}>
+              Otter!
+            </OtterButton>
+            <OtterButton id={id} isOtter={false}>
+              Not!
+            </OtterButton>
           </ButtonGroup>
         </Stack>
       </main>
 
       <footer className={styles.footer}>
         <Text>
-          <a href="https://amiotternot.com">amiotternot</a>
-          {' '}
-          by
-          {' '}
-          <a href="https://jaywritesco.de">jay harris</a>
-          {' '}
-          is
-          {' '}
+          <a href="https://amiotternot.com">amiotternot</a> by{" "}
+          <a href="https://jaywritesco.de">jay harris</a> is{" "}
           <a
             href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1"
             target="_blank"
             rel="license noopener noreferrer"
           >
             licensed
-          </a>
-          {' '}
+          </a>{" "}
           under CC BY 4.0
           <Image
             alt=""
-              style={{
-                height: "22px",
-                marginLeft: "3px",
-                verticalAlign: "text-bottom",
-              }}
-              src="/icons/cc.svg"
-              height={22}
-              width={22}
-            />
-            <Image
-              alt=""
-              style={{
-                height: "22px",
-                marginLeft: "3px",
-                verticalAlign: "text-bottom",
-              }}
-              src="/icons/by.svg"
-              height={22}
-              width={22}
-            />
+            style={{
+              height: "22px",
+              marginLeft: "3px",
+              verticalAlign: "text-bottom",
+            }}
+            src="/icons/cc.svg"
+            height={22}
+            width={22}
+          />
+          <Image
+            alt=""
+            style={{
+              height: "22px",
+              marginLeft: "3px",
+              verticalAlign: "text-bottom",
+            }}
+            src="/icons/by.svg"
+            height={22}
+            width={22}
+          />
         </Text>
 
-
-
-
-{/* 
+        {/* 
         <a
           href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1"
           target="_blank"
@@ -146,7 +140,7 @@ export async function getServerSideProps(context) {
       );
     });
     return { props: result };
-  } catch(err) {
+  } catch (err) {
     return { notFound: true };
   }
 }
