@@ -6,7 +6,7 @@ export default function OtterButton(props) {
 
   return (
     <Button size="lg" fontFamily="primary">
-      <Link href={`/?id=${id}&otter=${isOtter}`}>
+      <Link href={`/api/${isOtter ? "upvote" : "downvote"}/${id}`}>
         {props.children}
       </Link>
     </Button>

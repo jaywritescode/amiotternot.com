@@ -83,7 +83,6 @@ export default function Home(props) {
 }
 
 import sqlite3 from "sqlite3";
-import { useRouter } from "next/router";
 
 const DATABASE = "pics.db";
 
