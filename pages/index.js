@@ -41,6 +41,52 @@ export default function Home(props) {
       </main>
 
       <footer className={styles.footer}>
+        <Text>
+          <a href="https://amiotternot.com">amiotternot</a>
+          {' '}
+          by
+          {' '}
+          <a href="https://jaywritesco.de">jay harris</a>
+          {' '}
+          is
+          {' '}
+          <a
+            href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1"
+            target="_blank"
+            rel="license noopener noreferrer"
+          >
+            licensed
+          </a>
+          {' '}
+          under CC BY 4.0
+          <Image
+            alt=""
+              style={{
+                height: "22px",
+                marginLeft: "3px",
+                verticalAlign: "text-bottom",
+              }}
+              src="/icons/cc.svg"
+              height={22}
+              width={22}
+            />
+            <Image
+              alt=""
+              style={{
+                height: "22px",
+                marginLeft: "3px",
+                verticalAlign: "text-bottom",
+              }}
+              src="/icons/by.svg"
+              height={22}
+              width={22}
+            />
+        </Text>
+
+
+
+
+{/* 
         <a
           href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1"
           target="_blank"
@@ -65,7 +111,7 @@ export default function Home(props) {
               src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
             />
           </small>
-        </a>
+        </a> */}
 
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
