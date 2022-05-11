@@ -1,7 +1,10 @@
 import { ButtonGroup, Heading, Stack, Text } from "@chakra-ui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCreativeCommons, faCreativeCommonsBy } from "@fortawesome/free-brands-svg-icons";
 import Head from "next/head";
 import Image from "next/image";
 import { Attribution, OtterButton } from "../components";
+
 import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
@@ -56,26 +59,10 @@ export default function Home(props) {
             licensed
           </a>{" "}
           under CC BY 4.0
-          <Image
-            alt=""
-            style={{
-              marginLeft: "3px",
-              verticalAlign: "text-bottom",
-            }}
-            src="/icons/cc.svg"
-            height={22}
-            width={22}
-          />
-          <Image
-            alt=""
-            style={{
-              marginLeft: "3px",
-              verticalAlign: "text-bottom",
-            }}
-            src="/icons/by.svg"
-            height={22}
-            width={22}
-          />
+          {" "}
+          <FontAwesomeIcon icon={faCreativeCommons} />
+          {" "}
+          <FontAwesomeIcon icon={faCreativeCommonsBy} />          
         </Text>
       </footer>
     </div>
