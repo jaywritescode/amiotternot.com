@@ -1,6 +1,14 @@
-import { ButtonGroup, Heading, Stack, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Heading,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCreativeCommons, faCreativeCommonsBy } from "@fortawesome/free-brands-svg-icons";
+import {
+  faCreativeCommons,
+  faCreativeCommonsBy,
+} from "@fortawesome/free-brands-svg-icons";
 import Head from "next/head";
 import Image from "next/image";
 import { Attribution, OtterButton } from "../components";
@@ -36,14 +44,14 @@ export default function Home(props) {
           />
           <Attribution user={user} user_id={user_id} />
 
-          <ButtonGroup>
+          <Flex justify="space-around">
             <OtterButton id={id} isOtter={true}>
               Otter!
             </OtterButton>
             <OtterButton id={id} isOtter={false}>
               Not!
             </OtterButton>
-          </ButtonGroup>
+          </Flex>
         </Stack>
       </main>
 
@@ -58,11 +66,8 @@ export default function Home(props) {
           >
             licensed
           </a>{" "}
-          under CC BY 4.0
-          {" "}
-          <FontAwesomeIcon icon={faCreativeCommons} />
-          {" "}
-          <FontAwesomeIcon icon={faCreativeCommonsBy} />          
+          under CC BY 4.0 <FontAwesomeIcon icon={faCreativeCommons} />{" "}
+          <FontAwesomeIcon icon={faCreativeCommonsBy} />
         </Text>
       </footer>
     </div>
