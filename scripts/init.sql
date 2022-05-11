@@ -1,0 +1,2 @@
+CREATE TABLE IF NOT EXISTS images (id INTEGER PRIMARY KEY, keyword, original_id, source, width, height, user, user_id, filename, created_on DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS votes (image_id REFERENCES images(id), is_otter);
