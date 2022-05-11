@@ -4,6 +4,7 @@ const db = new sqlite3.Database("pics.db");
 sqlite3.verbose();
 
 export default function handler(req, res) {
+  console.log("query: ", req.query);
   const {
     query: { image_id },
   } = req;
@@ -12,5 +13,5 @@ export default function handler(req, res) {
     db.run("INSERT INTO votes VALUES (?, true)", image_id);
   });
 
-  res.redirect("/");
+  res.send(204);
 }

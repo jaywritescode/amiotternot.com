@@ -16,6 +16,7 @@ import { Attribution, OtterButton } from "../components";
 import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
+  console.log(props);
   const { id, keyword, width, height, user, user_id, filename } = props;
 
   return (
@@ -79,7 +80,9 @@ import sqlite3 from "sqlite3";
 const DATABASE = "pics.db";
 
 export async function getServerSideProps(context) {
+  console.log("context.query: ", context.query);
   const db = new sqlite3.Database(DATABASE);
+  const { query } = context;
 
   try {
     const result = await new Promise((resolve, reject) => {
@@ -91,7 +94,7 @@ export async function getServerSideProps(context) {
         }
       );
     });
-    return { props: result };
+    return { props: Object.assign({}, result, query) };
   } catch (err) {
     return { notFound: true };
   }
