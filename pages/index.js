@@ -1,4 +1,4 @@
-import { Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import { Box, Center, Divider, Flex, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCreativeCommons,
@@ -12,7 +12,7 @@ import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
   console.log(props);
-  const { id, keyword, width, height, user, user_id, filename } = props;
+  const { id: image_id, keyword, width, height, user, user_id, previousImage } = props;
 
   return (
     <div className={styles.container}>
@@ -31,24 +31,32 @@ export default function Home(props) {
           {"mustelids don't give a shit"}
         </Text>
 
-        <Stack>
-          <Image
-            src={`/pics/${filename}`}
-            width={width}
-            height={height}
-            alt={`${keyword} pic`}
-          />
-          <Attribution user={user} user_id={user_id} />
+        <Box width={880}>
+          <HStack spacing={'12'}>
+            <Box width={640} height={480}>
+              <Center h={480}>
+                <Image
+                  src={`/pics/${image_id}.jpg`}
+                  width={width}
+                  height={height}
+                  layout="intrinsic"
+                  alt={`${keyword} pic`}
+                />
+              </Center>
 
-          <Flex justify="space-around">
-            <OtterButton id={id} isOtter={true}>
-              Otter!
-            </OtterButton>
-            <OtterButton id={id} isOtter={false}>
-              Not!
-            </OtterButton>
-          </Flex>
-        </Stack>
+              <Attribution user={user} user_id={user_id} />
+
+              <Flex justify="space-around">
+                <OtterButton id={image_id} isOtter={true}>
+                  Otter!
+                </OtterButton>
+                <OtterButton id={image_id} isOtter={false}>
+                  Not!
+                </OtterButton>
+              </Flex>
+            </Box>
+          </HStack>
+        </Box>
       </main>
 
       <footer className={styles.footer}>
@@ -82,7 +90,7 @@ export async function getServerSideProps(context) {
   try {
     const result = await new Promise((resolve, reject) => {
       db.get(
-        "SELECT id, keyword, width, height, user, user_id, filename FROM images ORDER BY random() limit 1",
+        "SELECT id, keyword, width, height, user, user_id FROM images ORDER BY random() limit 1",
         (err, row) => {
           if (err) reject(err);
           else resolve(row);
