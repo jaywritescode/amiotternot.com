@@ -8,7 +8,7 @@ export default function OtterButton(props) {
   const onClick = async (e) => {
     await fetch(`/api/${id}/vote`, {
       method: "post",
-      body: { isOtter },
+      body: JSON.stringify({ isOtter }),
     });
     router.push(`/?previousImage=${id}`);
   };
