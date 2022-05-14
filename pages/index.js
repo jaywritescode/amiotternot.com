@@ -116,15 +116,19 @@ export async function getServerSideProps(context) {
       }
 
       db.all(
-        "SELECT image_id, is_otter, COUNT(is_otter) as count FROM votes WHERE image_id=? GROUP BY is_otter",
+        "SELECT image_id, is_otter, COUNT(is_otter) as count, keyword, width, height " +
+          "FROM images JOIN votes ON images.id=votes.image_id WHERE image_id=? GROUP BY is_otter",
         query.previousImage,
         (err, rows) => {
           if (err) reject(err);
           else {
             resolve({
-              image_id: query.previousImage,
+              image_id: rows[0]["image_id"],
               upvotes: _.find(rows, ["is_otter", 1])["count"],
               totalVotes: _.sumBy(rows, "count"),
+              keyword: rows[0]["keyword"],
+              width: rows[0]["width"],
+              height: rows[0]["height"],
             });
           }
         }
