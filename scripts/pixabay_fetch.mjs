@@ -101,7 +101,7 @@ async function remove(filename) {
       throw err;
     }
 
-    db.run("DELETE FROM images WHERE id=?", path.basename(filename, '.jpg'));
+    db.run("DELETE FROM images WHERE id=?", path.basename(filename, ".jpg"));
   });
 }
 

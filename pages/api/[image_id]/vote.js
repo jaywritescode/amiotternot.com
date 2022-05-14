@@ -10,7 +10,11 @@ export default function handler(req, res) {
   const body = JSON.parse(req.body);
 
   db.serialize(() => {
-    db.run("INSERT INTO votes (image_id, is_otter) VALUES (?, ?)", image_id, body.isOtter);
+    db.run(
+      "INSERT INTO votes (image_id, is_otter) VALUES (?, ?)",
+      image_id,
+      body.isOtter
+    );
   });
 
   res.send(204);
