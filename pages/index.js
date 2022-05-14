@@ -20,6 +20,7 @@ import styles from "../styles/Home.module.css";
 export default function Home(props) {
   const {
     current: { id: image_id, keyword, width, height, user, user_id },
+    previous: { image_id: previous_image_id, upvotes, totalVotes }
   } = props;
 
   return (
@@ -65,9 +66,9 @@ export default function Home(props) {
             </Box>
 
             <Box width={216}>
-              {/* <Text>{previous.image}</Text>
-              <Text>upvotes: {previous.upvotes}</Text>
-              <Text>total votes: {previous.totalVotes}</Text> */}
+              <Text>{previous_image_id}</Text>
+              <Text>upvotes: {upvotes}</Text>
+              <Text>total votes: {totalVotes}</Text>
             </Box>
           </HStack>
         </Box>
