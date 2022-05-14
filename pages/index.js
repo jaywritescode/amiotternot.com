@@ -1,4 +1,11 @@
-import { Box, Center, Divider, Flex, Heading, HStack, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  HStack,
+  Text,
+} from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCreativeCommons,
@@ -11,8 +18,9 @@ import { Attribution, OtterButton } from "../components";
 import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
-  console.log(props);
-  const { id: image_id, keyword, width, height, user, user_id, previousImage } = props;
+  const {
+    current: { id: image_id, keyword, width, height, user, user_id },
+  } = props;
 
   return (
     <div className={styles.container}>
@@ -32,7 +40,7 @@ export default function Home(props) {
         </Text>
 
         <Box width={880}>
-          <HStack spacing={'12'}>
+          <HStack spacing={"12"}>
             <Box width={640} height={480}>
               <Center h={480}>
                 <Image
@@ -54,6 +62,12 @@ export default function Home(props) {
                   Not!
                 </OtterButton>
               </Flex>
+            </Box>
+
+            <Box width={216}>
+              {/* <Text>{previous.image}</Text>
+              <Text>upvotes: {previous.upvotes}</Text>
+              <Text>total votes: {previous.totalVotes}</Text> */}
             </Box>
           </HStack>
         </Box>
@@ -79,16 +93,16 @@ export default function Home(props) {
 }
 
 import sqlite3 from "sqlite3";
+import _ from "lodash";
 
 const DATABASE = "pics.db";
 
 export async function getServerSideProps(context) {
-  console.log("context.query: ", context.query);
   const db = new sqlite3.Database(DATABASE);
   const { query } = context;
 
   try {
-    const result = await new Promise((resolve, reject) => {
+    const current = await new Promise((resolve, reject) => {
       db.get(
         "SELECT id, keyword, width, height, user, user_id FROM images ORDER BY random() limit 1",
         (err, row) => {
@@ -97,7 +111,30 @@ export async function getServerSideProps(context) {
         }
       );
     });
-    return { props: Object.assign({}, result, query) };
+
+    const previous = await new Promise((resolve, reject) => {
+      if (_.isEmpty(query)) {
+        resolve({});
+        return;
+      }
+
+      db.all(
+        "SELECT image_id, is_otter, COUNT(is_otter) as count FROM votes WHERE image_id=? GROUP BY is_otter",
+        query.previousImage,
+        (err, rows) => {
+          if (err) reject(err);
+          else {
+            resolve({
+              image_id: query.previousImage,
+              upvotes: _.find(rows, ["is_otter", 1])["count"],
+              totalVotes: _.sumBy(rows, "count"),
+            });
+          }
+        }
+      );
+    });
+
+    return { props: { current, previous } };
   } catch (err) {
     return { notFound: true };
   }
