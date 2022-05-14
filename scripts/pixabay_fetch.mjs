@@ -3,6 +3,7 @@ import { pipeline } from "node:stream/promises";
 
 import fetch from "node-fetch";
 import dotenv from "dotenv";
+import { nanoid } from "nanoid";
 import sqlite3 from "sqlite3";
 import _ from "lodash";
 
@@ -32,8 +33,8 @@ async function update(keyword) {
   db.serialize();
   db.run(
     "CREATE TABLE IF NOT EXISTS images " +
-      "(id INTEGER PRIMARY KEY, keyword, original_id, source, width, height, " +
-      "user, user_id, filename, created_on DEFAULT CURRENT_TIMESTAMP)"
+      "(id PRIMARY KEY, keyword, original_id, source, width, height, " +
+      "user, user_id, created_on DEFAULT CURRENT_TIMESTAMP)"
   );
   db.run(
     "CREATE TABLE IF NOT EXISTS votes (image_id REFERENCES images(id), is_otter)"
@@ -64,12 +65,8 @@ async function update(keyword) {
               user_id,
               user,
             } = record;
-            const filename = pageURL.match(/\/([^/]+)\/$/)[1] + ".jpg";
-
-            if (!filename) {
-              console.warn("Couldn't parse filename from page URL. Aborting.");
-              return;
-            }
+            const image_id = nanoid();
+            const filename = image_id + ".jpg";
 
             const image = await fetch(webformatURL);
             await pipeline(
@@ -79,9 +76,10 @@ async function update(keyword) {
 
             return db.run(
               "INSERT INTO images " +
-                "(keyword, original_id, source, width, height, user, user_id, filename) " +
+                "(id, keyword, original_id, source, width, height, user, user_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
               [
+                image_id,
                 keyword,
                 id,
                 pageURL,
@@ -89,7 +87,6 @@ async function update(keyword) {
                 webformatHeight,
                 user,
                 user_id,
-                filename,
               ]
             );
           })
@@ -104,7 +101,7 @@ async function remove(filename) {
       throw err;
     }
 
-    db.run("DELETE FROM images WHERE filename=?", path.basename(filename));
+    db.run("DELETE FROM images WHERE id=?", path.basename(filename, '.jpg'));
   });
 }
 

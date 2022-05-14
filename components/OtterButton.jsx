@@ -1,14 +1,21 @@
 import { Button } from "@chakra-ui/react";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function OtterButton(props) {
   const { id, isOtter } = props;
+  const router = useRouter();
+
+  const onClick = async (e) => {
+    await fetch(`/api/${id}/vote`, {
+      method: "post",
+      body: JSON.stringify({ isOtter }),
+    });
+    router.push(`/?previousImage=${id}`);
+  };
 
   return (
-    <Button size="lg" fontFamily="primary">
-      <Link href={`/api/${isOtter ? "upvote" : "downvote"}/${id}`}>
-        {props.children}
-      </Link>
+    <Button size="lg" fontFamily="primary" onClick={onClick}>
+      {props.children}
     </Button>
   );
 }
