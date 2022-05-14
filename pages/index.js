@@ -1,11 +1,4 @@
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  HStack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, HStack, Text } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCreativeCommons,
@@ -21,7 +14,7 @@ import styles from "../styles/Home.module.css";
 export default function Home(props) {
   const {
     current: { id: image_id, keyword, width, height, user, user_id },
-    previous
+    previous,
   } = props;
 
   return (
@@ -42,7 +35,7 @@ export default function Home(props) {
         </Text>
 
         <Box width={880}>
-          <HStack spacing={"12"}>
+          <HStack spacing={"6"}>
             <Box width={640} height={480}>
               <Center h={480}>
                 <Image
@@ -66,7 +59,7 @@ export default function Home(props) {
               </Flex>
             </Box>
 
-           {!(_.isEmpty(previous)) && <VoteResults {...previous} />}
+            {!_.isEmpty(previous) && <VoteResults {...previous} />}
           </HStack>
         </Box>
       </main>
