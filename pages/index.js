@@ -13,14 +13,14 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import Head from "next/head";
 import Image from "next/image";
-import { Attribution, OtterButton } from "../components";
+import { Attribution, OtterButton, VoteResults } from "../components";
 
 import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
   const {
     current: { id: image_id, keyword, width, height, user, user_id },
-    previous: { image_id: previous_image_id, upvotes, totalVotes }
+    previous
   } = props;
 
   return (
@@ -65,11 +65,7 @@ export default function Home(props) {
               </Flex>
             </Box>
 
-            <Box width={216}>
-              <Text>{previous_image_id}</Text>
-              <Text>upvotes: {upvotes}</Text>
-              <Text>total votes: {totalVotes}</Text>
-            </Box>
+            <VoteResults {...previous} />
           </HStack>
         </Box>
       </main>
