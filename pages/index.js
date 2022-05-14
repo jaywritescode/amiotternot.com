@@ -11,6 +11,7 @@ import {
   faCreativeCommons,
   faCreativeCommonsBy,
 } from "@fortawesome/free-brands-svg-icons";
+import _ from "lodash";
 import Head from "next/head";
 import Image from "next/image";
 import { Attribution, OtterButton, VoteResults } from "../components";
@@ -65,7 +66,7 @@ export default function Home(props) {
               </Flex>
             </Box>
 
-            <VoteResults {...previous} />
+           {!(_.isEmpty(previous)) && <VoteResults {...previous} />}
           </HStack>
         </Box>
       </main>
@@ -90,7 +91,6 @@ export default function Home(props) {
 }
 
 import sqlite3 from "sqlite3";
-import _ from "lodash";
 
 const DATABASE = "pics.db";
 
