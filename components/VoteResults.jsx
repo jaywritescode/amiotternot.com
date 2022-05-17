@@ -14,9 +14,9 @@ export default function VoteResults(props) {
         alt={`photo of a ${keyword}`}
       />
       <Stat>
-        <StatLabel>{`The internet has decided! This ${keyword} ${percent >= 0.5 ? "is" : "is not"} otter!`}</StatLabel>
+        {/* <StatLabel>{`The internet has decided! This ${keyword} ${percent >= 0.5 ? "is" : "is not"} otter!`}</StatLabel> */}
         <Progress value={percent * 100}></Progress>
-        <StatNumber>{`${upvotes} out of ${totalVotes} total votes`}</StatNumber>
+        <StatLabel>{`${upvotes} out of ${totalVotes} total votes`}</StatLabel>
       </Stat>
     </Box>
   );
