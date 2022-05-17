@@ -115,9 +115,11 @@ export async function getServerSideProps(context) {
         (err, rows) => {
           if (err) reject(err);
           else {
+            const upvotes_row = _.find(rows, ['is_otter', 1]);
+
             resolve({
               image_id: rows[0]["image_id"],
-              upvotes: _.find(rows, ["is_otter", 1])["count"],
+              upvotes: upvotes_row ? upvotes_row["count"] : 0,
               totalVotes: _.sumBy(rows, "count"),
               keyword: rows[0]["keyword"],
               width: rows[0]["width"],
