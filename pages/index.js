@@ -6,8 +6,12 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import _ from "lodash";
 import Head from "next/head";
-import Image from "next/image";
-import { Attribution, OtterButton, VoteResults } from "../components";
+import {
+  Attribution,
+  MainImage,
+  OtterButton,
+  VoteResults,
+} from "../components";
 
 import styles from "../styles/Home.module.css";
 
@@ -38,12 +42,11 @@ export default function Home(props) {
           <HStack spacing={"6"}>
             <Box width={640} height={480}>
               <Center h={480}>
-                <Image
-                  src={`/pics/${image_id}.jpg`}
+                <MainImage
+                  image_id={image_id}
                   width={width}
                   height={height}
-                  layout="intrinsic"
-                  alt={`${keyword} pic`}
+                  keyword={keyword}
                 />
               </Center>
 
