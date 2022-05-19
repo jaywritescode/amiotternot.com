@@ -118,7 +118,7 @@ export async function getServerSideProps(context) {
         (err, rows) => {
           if (err) reject(err);
           else {
-            const upvotes_row = _.find(rows, ['is_otter', 1]);
+            const upvotes_row = _.find(rows, ["is_otter", 1]);
 
             resolve({
               image_id: rows[0]["image_id"],

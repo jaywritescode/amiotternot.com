@@ -1,4 +1,9 @@
-import { Box, Progress, Stat, StatLabel, StatNumber, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Progress,
+  Stat,
+  StatLabel,
+} from "@chakra-ui/react";
 import Image from "next/image";
 
 export default function VoteResults(props) {
@@ -10,7 +15,7 @@ export default function VoteResults(props) {
       <Image
         src={`/pics/${image_id}.jpg`}
         width={222}
-        height={height * 222 / width}
+        height={(height * 222) / width}
         alt={`photo of a ${keyword}`}
       />
       <Stat>
