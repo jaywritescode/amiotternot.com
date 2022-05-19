@@ -1,5 +1,5 @@
 import Image from "next/image";
-import otter from "public/otter.png";
+import otter from "../public/otter.png";
 
 export default function MainImage(props) {
   const { image_id, width, height, keyword } = props;
