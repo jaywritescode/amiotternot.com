@@ -38,5 +38,7 @@
     "eslint-config-prettier": "^8.5.0",
     "prettier": "^2.6.2"
   },
-  "cacheDirectories": [".next/cache"]
+  "cacheDirectories": [
+    ".next/cache"
+  ]
 }

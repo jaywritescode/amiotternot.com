@@ -1,9 +1,4 @@
-import {
-  Box,
-  Progress,
-  Stat,
-  StatLabel,
-} from "@chakra-ui/react";
+import { Box, Progress, Stat, StatLabel } from "@chakra-ui/react";
 import Image from "next/image";
 
 export default function VoteResults(props) {
