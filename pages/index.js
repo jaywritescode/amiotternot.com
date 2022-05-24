@@ -86,55 +86,56 @@ export default function Home(props) {
   );
 }
 
-import sqlite3 from "sqlite3";
-
-const DATABASE = "pics.db";
+import { Client } from "pg";
 
 export async function getServerSideProps(context) {
-  const db = new sqlite3.Database(DATABASE);
+  console.log("DATABASE_URL: " + process.env.DATABASE_URL);
+
   const { query } = context;
 
   try {
-    const current = await new Promise((resolve, reject) => {
-      db.get(
-        "SELECT id, keyword, width, height, user, user_id FROM images ORDER BY random() limit 1",
-        (err, row) => {
-          if (err) reject(err);
-          else resolve(row);
-        }
-      );
+    const client = new Client({
+      connectionString: process.env.DATABASE_URL + "?sslmode=disable",
+      ssl: {
+        rejectUnauthorized: false,
+      },
     });
+    await client.connect();
 
-    const previous = await new Promise((resolve, reject) => {
-      if (_.isEmpty(query)) {
-        resolve({});
-        return;
-      }
+    const current = await client.query(
+      "SELECT id, keyword, width, height, username, user_id FROM amiotternot.images ORDER BY random() LIMIT 1"
+    );
 
-      db.all(
-        "SELECT image_id, is_otter, COUNT(is_otter) as count, keyword, width, height " +
-          "FROM images JOIN votes ON images.id=votes.image_id WHERE image_id=? GROUP BY is_otter",
-        query.previousImage,
-        (err, rows) => {
-          if (err) reject(err);
-          else {
-            const upvotes_row = _.find(rows, ["is_otter", 1]);
+    const previous = _.isEmpty(query)
+      ? await new Promise((resolve) => resolve({}))
+      : await client.query(
+          "SELECT image_id, is_otter, COUNT(is_otter) as count, keyword, width, height " +
+            "FROM images JOIN votes ON amiotternot.images.id=amiotternot.votes.image_id WHERE image_id=$1 GROUP BY is_otter",
+          [query.previousImage]
+        );
 
-            resolve({
-              image_id: rows[0]["image_id"],
+    const upvotes_row = _.find(previous, ["is_otter", 1]);
+
+    const props = Object.assign(
+      {},
+      {
+        current: current.rows[0],
+        previous: previous.rows
+          ? {
+              image_id: previous.rows[0]["image_id"],
               upvotes: upvotes_row ? upvotes_row["count"] : 0,
-              totalVotes: _.sumBy(rows, "count"),
-              keyword: rows[0]["keyword"],
-              width: rows[0]["width"],
-              height: rows[0]["height"],
-            });
-          }
-        }
-      );
-    });
+              totalVotes: _.sumBy(previous, "count"),
+              keyword: previous.rows[0]["keyword"],
+              width: previous.rows[0]["width"],
+              height: previous.rows[0]["height"],
+            }
+          : {},
+      }
+    );
 
-    return { props: { current, previous } };
+    return { props };
   } catch (err) {
+    console.log(err);
     return { notFound: true };
   }
 }
