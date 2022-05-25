@@ -17,7 +17,7 @@ import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
   const {
-    current: { id: image_id, keyword, width, height, user, user_id },
+    current: { image_id, keyword, width, height, user, user_id },
     previous,
   } = props;
 

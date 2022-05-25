@@ -7,7 +7,7 @@ export default function MainImage(props) {
   if (image_id) {
     return (
       <Image
-        src={`/pics/image_id.jpg`}
+        src={`/pics/${image_id}.jpg`}
         width={width}
         height={height}
         alt={`${keyword} pic`}
