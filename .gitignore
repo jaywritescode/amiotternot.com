@@ -33,5 +33,4 @@ yarn-error.log*
 .vercel
 
 ## output from scripts
-public/pics/**/*
 pics.db
