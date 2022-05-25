@@ -103,7 +103,7 @@ export async function getServerSideProps(context) {
     await client.connect();
 
     const current = await client.query(
-      "SELECT id, keyword, width, height, username, user_id FROM amiotternot.images ORDER BY random() LIMIT 1"
+      "SELECT id as image_id, keyword, width, height, username, user_id FROM amiotternot.images ORDER BY random() LIMIT 1"
     );
 
     const previous = _.isEmpty(query)
