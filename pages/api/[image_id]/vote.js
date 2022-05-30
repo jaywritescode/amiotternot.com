@@ -1,11 +1,14 @@
 import { Client } from "pg";
 
-const client = new Client({
-  connectionString: process.env.DATABASE_URL + "?sslmode=disable",
-  ssl: {
-    rejectUnauthorized: false,
+const clientConn = Object.assign(
+  {},
+  {
+    connectionString: process.env.DATABASE_URL,
   },
-});
+  process.env.ENVIRONMENT == "prod"
+    ? { ssl: { rejectUnauthorized: false } }
+    : {}
+);
 
 export default async function handler(req, res) {
   const {
@@ -13,12 +16,12 @@ export default async function handler(req, res) {
   } = req;
   const body = JSON.parse(req.body);
 
+  const client = new Client(clientConn);
   await client.connect();
 
   client.query(
-    "INSERT INTO amiotternot.votes (image_id, is_otter) VALUES (?, ?)",
-    image_id,
-    body.isOtter
+    "INSERT INTO amiotternot.votes (image_id, is_otter) VALUES ($1, $2)",
+    [image_id, body.isOtter]
   );
 
   res.send(204);

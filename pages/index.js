@@ -89,8 +89,6 @@ export default function Home(props) {
 import { Client } from "pg";
 
 export async function getServerSideProps(context) {
-  console.log("DATABASE_URL: " + process.env.DATABASE_URL);
-
   const { query } = context;
 
   const clientConn = Object.assign(
