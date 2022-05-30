@@ -93,13 +93,12 @@ export async function getServerSideProps(context) {
 
   const { query } = context;
 
+  const clientConn = Object.assign({}, {
+    connectionString: process.env.DATABASE_URL,
+  }, process.env.ENVIRONMENT == 'prod' ? { ssl: { rejectUnauthorized: false } } : {});
+
   try {
-    const client = new Client({
-      connectionString: process.env.DATABASE_URL,
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    });
+    const client = new Client(clientConn);
     await client.connect();
 
     const current = await client.query(
