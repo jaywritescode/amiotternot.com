@@ -95,7 +95,7 @@ export async function getServerSideProps(context) {
 
   try {
     const client = new Client({
-      connectionString: process.env.DATABASE_URL + "?sslmode=disable",
+      connectionString: process.env.DATABASE_URL,
       ssl: {
         rejectUnauthorized: false,
       },
