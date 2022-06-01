@@ -109,32 +109,31 @@ export async function getServerSideProps(context) {
       "SELECT id as image_id, keyword, width, height, username, user_id FROM amiotternot.images ORDER BY random() LIMIT 1"
     );
 
-    const previous = _.isEmpty(query)
-      ? await new Promise((resolve) => resolve({}))
-      : await client.query(
-          "SELECT image_id, is_otter, COUNT(is_otter) as count, keyword, width, height " +
-            "FROM images JOIN votes ON amiotternot.images.id=amiotternot.votes.image_id WHERE image_id=$1 GROUP BY is_otter",
-          [query.previousImage]
-        );
+    const props = {
+      current: current.rows[0],
+      previous: {}
+    }
 
-    const upvotes_row = _.find(previous, ["is_otter", 1]);
+    if (!_.isEmpty(query)) {
+      const votes = await client.query(
+        "SELECT is_otter, COUNT(is_otter) as count FROM amiotternot.votes WHERE image_id=$1 GROUP BY is_otter",
+        [query.previousImage]
+      );
 
-    const props = Object.assign(
-      {},
-      {
-        current: current.rows[0],
-        previous: previous.rows
-          ? {
-              image_id: previous.rows[0]["image_id"],
-              upvotes: upvotes_row ? upvotes_row["count"] : 0,
-              totalVotes: _.sumBy(previous, "count"),
-              keyword: previous.rows[0]["keyword"],
-              width: previous.rows[0]["width"],
-              height: previous.rows[0]["height"],
-            }
-          : {},
-      }
-    );
+      const upvotes_row = _.find(votes.rows, ["is_otter", true]);
+      Object.assign(props.previous, {
+        upvotes: (upvotes_row && upvotes_row.count) || 0,
+        totalVotes: _.sumBy(votes.rows, "count"),
+      });
+
+      const previous = await client.query(
+        "SELECT id, keyword, width, height FROM amiotternot.images WHERE id=$1", [query.previousImage]
+      );
+
+      Object.assign(props.previous, previous.rows[0]);
+    }
+
+    console.log(props);
 
     return { props };
   } catch (err) {
