@@ -17,7 +17,7 @@ import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
   const {
-    current: { image_id, keyword, width, height, user, user_id },
+    current: { image_id, keyword, width, height, username, user_id },
     previous,
   } = props;
 
@@ -50,7 +50,7 @@ export default function Home(props) {
                 />
               </Center>
 
-              <Attribution user={user} user_id={user_id} />
+              <Attribution user={username} user_id={user_id} />
 
               <Flex justify="space-around">
                 <OtterButton id={image_id} isOtter={true}>
