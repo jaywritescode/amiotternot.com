@@ -11,7 +11,7 @@ export default function VoteResults(props) {
         src={`/pics/${image_id}.jpg`}
         width={222}
         height={(height * 222) / width}
-        alt={`photo of a ${keyword}`}
+        alt={`${keyword} photo`}
       />
       <Stat>
         {/* <StatLabel>{`The internet has decided! This ${keyword} ${percent >= 0.5 ? "is" : "is not"} otter!`}</StatLabel> */}
