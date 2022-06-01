@@ -2,7 +2,7 @@ import { Box, Progress, Stat, StatLabel } from "@chakra-ui/react";
 import Image from "next/image";
 
 export default function VoteResults(props) {
-  const { image_id, upvotes, totalVotes, width, height, keyword } = props;
+  const { id: image_id, upvotes, totalVotes, width, height, keyword } = props;
   const percent = upvotes / totalVotes;
 
   return (
